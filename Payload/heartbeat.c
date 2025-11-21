@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-#include "SignalComms.h"
+//#include "SignalComms.h"
 
 volatile sig_atomic_t hbreceived = 0;
 volatile sig_atomic_t payloadpid;
@@ -15,13 +15,12 @@ void heartbeat(int sig, siginfo_t *info, void *uc)
     hbreceived = 1;
     payloadpid = info->si_pid;
 }
-int checkregistration(int *registration, int payloadpid)
+int checkregistration(int *registration)
 {
 	for(int i = 0; i < 5; i++)
 	{
 		if(registration[i] == payloadpid)
 		{
-			printf("Child already in\n");
 			return 1;
 		}
 	}
@@ -32,35 +31,47 @@ void printregistration(int *registration)
 {
 	for(int i = 0; i < 5; i++)
 	{
-		printf("%d\n",registartion[i]);
+		printf("%d\n",registration[i]);
 	}
 }
 
 int main()
 {
+	pid_t parent = getpid();
+	printf("Process ID: %d\n",parent);	
 	int childpids[5] = {0};
 	struct sigaction A = {0}; // Initialize to 0
-	A.sa_sigaction = &example1; //Register signal handler example1 to A
+	A.sa_sigaction = &heartbeat; //Register signal handler example1 to A
 	A.sa_flags = SA_SIGINFO; //Turn on SA siginfo
 	if(sigaction(SIGUSR1, &A, NULL) == -1)
 	{
-		if((checkregistration(childpids,payloadpid)) == 0)
+		return 1;
+		
+	}
+	while(1)
+	{
+		hbreceived += 1;
+		if(hbreceived == 5)
 		{
-			for(int j = 0;j < 5; j++)
+			printf("Termination process\n");
+			printf("Effected PIDS:\n");
+			printregistration(childpids);
+			return 1;
+		}
+		else
+		{
+			if((checkregistration(childpids))==0)
 			{
-				if(childpids[j] == 0)
+				for(int i = 0;i<5;i++)
 				{
-					childpids[j] = payloadpid;
+					if(childpids[i] == 0)
+					{
+						childpids[i] = payloadpid;
+						break;
+					}
 				}
 			}
 		}
-		printregistration(childpids);
-		
+		sleep(5);
 	}
-    time_t current_time;
-    time_t last_heartbeat_time;
-
-    // Get the initial time
-    time(&current_time);
-    last_heartbeat_time = current_time;
 }
