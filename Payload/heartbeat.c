@@ -72,6 +72,6 @@ int main()
 				}
 			}
 		}
-		sleep(5);
+		sleep(1);
 	}
 }

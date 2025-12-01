@@ -1,13 +1,31 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-
-int main()
+#include <string.h>
+#include <unistd.h>         // For read, write, close
+#include <arpa/inet.h>
+#include <signal.h>
+#include <sys/types.h>
+#define PORT 1337
+int main(int argc, char *argv[])
 {
-	buffer[1024];
+	pid_t ppid = fork();
+	if(ppid == 0)
+	{
+	while (1) {
+        if (kill(atoi(argv[1]), SIGUSR1) == -1) {
+            perror("kill failed");
+            return 1;
+        }
+        printf("Sent SIGUSR1 to %d\n", ppid);
+        sleep(1);
+    }
+	}
+	else{
+	char buffer[1024];
 	FILE *fp = fopen("FILETOOPEN.txt","r");
 	int client_fd;                              // File descriptor for client socket
-    struct sockaddr_in server_addr;             // Server address structure
+    	struct sockaddr_in server_addr;             // Server address structure
 
     // ----------------------
     // Create TCP socket
@@ -47,24 +65,6 @@ int main()
     // ----------------------
     // Send message to the server
     // ----------------------
-    const char *message = "Hello from client!";
-    write(client_fd, message, strlen(message));
-
-    // ----------------------
-    // Read response from server
-    // ----------------------
-    int bytes = read(client_fd, buffer, BUFFER_SIZE - 1);
-    if (bytes < 0) {
-        perror("read failed");
-    } else {
-        buffer[bytes] = '\0';               // Null-terminate the received data
-        printf("Server replied: %s\n", buffer);
-    }
-
-    // ----------------------
-    // Close connection
-    // ----------------------
-    close(client_fd);                        // Close the socket
-
-    return 0;                                // Successful exit
+    write(client_fd, buffer, strlen(buffer));
+	}
 }
