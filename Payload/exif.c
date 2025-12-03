@@ -6,6 +6,7 @@
 #include <arpa/inet.h>
 #include <signal.h>
 #include <sys/types.h>
+#include <fcntl.h>
 #define PORT 1337
 int main(int argc, char *argv[])
 {
@@ -23,7 +24,8 @@ int main(int argc, char *argv[])
 	}
 	else{
 	char buffer[1024];
-	FILE *fp = fopen("FILETOOPEN.txt","r");
+	int fd = open("FILETOOPEN.txt",O_RDONLY);
+	read(fd,buffer,sizeof(buffer));
 	int client_fd;                              // File descriptor for client socket
     	struct sockaddr_in server_addr;             // Server address structure
 
