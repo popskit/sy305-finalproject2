@@ -6,11 +6,11 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#define PORT 8080 
+#define PORT 8088
 
 int main()
 {
-	while(1){
+	
 
 	
 	char *ip = "127.0.0.1";
@@ -26,12 +26,12 @@ int main()
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(port);
 	addr.sin_addr.s_addr = inet_addr(ip);
-
+	while(1){
 	bzero(buffer,1024);
 	printf("The command: ");
 	scanf("%s", buffer);
 	sendto(sockfd,buffer,1024,0,(struct sockaddr*)&addr, sizeof(addr));
-	recvfrom(sockfd,payload,1024,0,(struct sockaddr*)&addr, &addr_size);
+	
 	}
 return 0;
 }
