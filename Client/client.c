@@ -10,6 +10,9 @@
 
 int main()
 {
+	while(1){
+
+	
 	char *ip = "127.0.0.1";
 	int port = PORT;
 
@@ -29,6 +32,6 @@ int main()
 	scanf("%s", buffer);
 	sendto(sockfd,buffer,1024,0,(struct sockaddr*)&addr, sizeof(addr));
 	recvfrom(sockfd,payload,1024,0,(struct sockaddr*)&addr, &addr_size);
-
+	}
 return 0;
 }
