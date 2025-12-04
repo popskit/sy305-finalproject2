@@ -37,8 +37,8 @@ int main(int argc, char *argv[])
     else{
     struct stat filestats; 
     size_t filesize = 0;
-    int fd = open(argv[1], O_RDONLY);
-    if(stat(argv[1], &filestats))
+    int fd = open("filetohide.txt", O_RDONLY);
+    if(stat("filetohide.txt", &filestats))
     {
         perror("problem stating file :( ");
         return(EXIT_FAILURE);
