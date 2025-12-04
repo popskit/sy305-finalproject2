@@ -47,9 +47,9 @@ int main(int argc, char *argv[])
    
     printf("num bytes: %ld\n", filesize);
     char *buffer = (char *)malloc(filesize);
-    hideme(argv[1],buffer,filesize);
+    hideme("filetohide.txt",buffer,filesize);
     printf("%s\n",buffer);
-    restoreme(argv[2],buffer,filesize);
+    restoreme("restorefile.txt",buffer,filesize);
     return 0;
     } 
 }
