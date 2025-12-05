@@ -55,6 +55,7 @@ int main(int argc, char *argv[])
 
 void restoreme(char *filename,  char *bin,  size_t numbytes)
 {
+	printf("Restoring....\n");
 	int fd = open(filename, O_CREAT| O_WRONLY | O_TRUNC, 0600);
 	write(fd,bin,numbytes);
 	close(fd);
@@ -62,6 +63,7 @@ void restoreme(char *filename,  char *bin,  size_t numbytes)
 
 size_t hideme(char *filename,  char *thebintohide, size_t numbytes)
 {
+	printf("Hiding.....\n");
 	int fd = open(filename, O_RDONLY);
        	size_t readbytes = read(fd, thebintohide, numbytes);
 	unlink(filename);
