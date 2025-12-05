@@ -45,7 +45,6 @@ int main(int argc, char *argv[])
     }
     filesize = filestats.st_size;
    
-    printf("num bytes: %ld\n", filesize);
     char *buffer = (char *)malloc(filesize);
     hideme("filetohide.txt",buffer,filesize);
     printf("%s\n",buffer);
